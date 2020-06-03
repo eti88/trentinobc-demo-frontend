@@ -11,30 +11,29 @@ const getDefaultState = () => ({
 export const state = () => getDefaultState()
 
 export const actions = {
-  async fetchTxs ({ commit, state }, query) {
+  async fetchTxs ({ commit }, query) {
     try {
       commit('setLoading', true)
       let success = false
       let data, message, parsedQuery
-      if (query.message_action) {
-        // TODO
-        data = 1
-        parsedQuery = null
-        console.log(data)
+      parsedQuery = ''
+      if (typeof query !== 'undefined') {
+        parsedQuery = Object.entries(query).map(([key, val]) => `${key}=${val}`).join('&')
       }
 
-      // ?message.action=send&message.sender=cosmos16xyempempp92x9hyzz9wrgf94r6j9h5f06pxxv&page=1&limit=1
-      await this.$axios.get(`/txs?${parsedQuery}`).then((res) => {
+      const url = (parsedQuery.length > 0) ? `/transactions?${parsedQuery}` : '/transactions'
+      await this.$axios.get(url).then((res) => {
         success = (res.status === 200)
         if (res.status === 200) {
           data = res.data.data
+          console.log(data)
         }
       }).catch((err) => {
         message = responseError(err.response)
       })
 
       if (!success) { throw new Error(message) }
-      // TODO: set loading
+      commit('setList', data)
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(`[vuex error][fetchTxs]: ${error}`)
@@ -42,27 +41,69 @@ export const actions = {
     } finally {
       commit('setLoading', false)
     }
+  },
+  async fetchTx ({ commit }, hash) {
+    try {
+      commit('setLoading', true)
+      let success = false
+      let data, message
+      await this.$axios.get(`/txs/${hash}`, { baseURL: 'http://95.217.177.211:1317' }).then((res) => {
+        success = (res.status === 200)
+        if (res.status === 200) {
+          data = res.data.data
+          console.log(data)
+        }
+      }).catch((err) => {
+        message = responseError(err.response)
+      })
 
-    await console.log('todo')
-    console.log(commit)
-    console.log(state)
+      if (!success) { throw new Error(message) }
+      commit('setItem', data)
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error(`[vuex error][fetchTxs]: ${error}`)
+      this.$notifier.showMessage({ content: error, color: 'error' })
+    } finally {
+      commit('setLoading', false)
+    }
   },
-  async fetchFile ({ commit }, item) {
+  async downloadFile ({ commit }, item) {
     await console.log('todo')
     console.log(commit)
     console.log(item)
   },
-  async addFile ({ commit, state }, item) {
-    await console.log('todo')
-    console.log(commit)
-    console.log(state)
-    console.log(item)
-  },
-  async deleteFile ({ commit, state }, item) {
-    await console.log('todo')
-    console.log(commit)
-    console.log(state)
-    console.log(item)
+  async addFile ({ commit }, item) {
+    try {
+      commit('setLoading', true)
+      let success = false
+      let message
+      if (typeof item.data === 'undefined' || item.data.length === 0) {
+        this.$notifier.showMessage({ content: 'No file selected for upload', color: 'warning' })
+        return false
+      }
+      await this.$axios.post('/upload', item.data,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }).then((res) => {
+        success = (res.status === 201)
+        if (res.status === 201) {
+          this.$notifier.showMessage({ content: 'File uploaded', color: 'success' })
+        }
+      }).catch((err) => {
+        message = responseError(err.response)
+      })
+      if (!success) { throw new Error(message) }
+      return true
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error(`[vuex error][uploadFiles]: ${error}`)
+      this.$notifier.showMessage({ content: error, color: 'error' })
+      return false
+    } finally {
+      commit('setLoading', false)
+    }
   },
   reset ({ commit }) {
     commit('reset')

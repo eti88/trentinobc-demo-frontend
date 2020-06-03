@@ -7,8 +7,8 @@
     </v-list-item-avatar>
 
     <v-list-item-content>
-      <v-list-item-title v-text="value.title"></v-list-item-title>
-      <v-list-item-subtitle v-text="value.release_date"></v-list-item-subtitle>
+      <v-list-item-title v-text="value.title" />
+      <v-list-item-subtitle v-text="value.release_date" />
     </v-list-item-content>
 
     <v-list-item-action>
@@ -19,15 +19,15 @@
       >
         <template v-slot:activator="{ on }">
           <v-btn
-            v-on="on"
             icon
+            v-on="on"
           >
             <v-icon color="grey lighten-1">
               mdi-dots-vertical
             </v-icon>
           </v-btn>
         </template>
-        <v-list >
+        <v-list>
           <v-list-item
             @click="onDownload(item)"
           >

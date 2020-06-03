@@ -1,5 +1,4 @@
 import colors from 'vuetify/es5/util/colors'
-import it from 'vuetify/es5/locale/it'
 
 export default {
   mode: 'spa',
@@ -32,7 +31,8 @@ export default {
   */
   plugins: [
     { src: '~/plugins/notifier.js' },
-    { src: '~/plugins/custom-filters.js' }
+    { src: '~/plugins/custom-filters.js' },
+    { src: '~plugins/vee-validate.js', ssr: false },
   ],
   /*
   ** Nuxt.js dev-modules
@@ -50,6 +50,7 @@ export default {
     '@nuxtjs/axios',
     // Doc: https://github.com/nuxt-community/dotenv-module
     '@nuxtjs/dotenv',
+    '@nuxtjs/auth',
     'nuxt-moment',
   ],
   /*
@@ -57,7 +58,30 @@ export default {
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
-    baseURL: 'http://127.0.0.1:8000'
+    baseURL: process.env.BASE_URL
+  },
+  auth: {
+    plugins: [ '~/plugins/auth.js' ],
+    watchLoggedIn: true,
+    resetOnError: true,
+    rewriteRedirects: false,
+    redirect: {
+      login: '/login',
+      logout: '/',
+      callback: '/login',
+      home: '/'
+    },
+    strategies: {
+      local: {
+        endpoints: {
+          login: { url: '/auth/login', method: 'post', propertyName: 'data.token' },
+          user: { url: '/auth/me', method: 'get', propertyName: false },
+          logout: { url: '/auth/logout', method: 'post' }
+        },
+        tokenRequired: true,
+        tokenType: 'Bearer'
+      }
+    }
   },
   /*
   ** vuetify module configuration
@@ -79,10 +103,6 @@ export default {
         }
       }
     },
-    lang: {
-      locales: { it },
-      current: 'it'
-    },
     options: {
       minifyTheme: function (css) {
         return process.env.NODE_ENV === 'production'
@@ -95,10 +115,15 @@ export default {
   ** Build configuration
   */
   build: {
-    /*
-    ** You can extend webpack config here
-    */
-    extend (config, ctx) {
-    }
+    vendor: ['vee-validate'],
+      transpile: [
+        'vee-validate/dist/rules',
+        'nuxt-vuex-localstorage'
+      ],
+      /*
+      ** You can extend webpack config here
+      */
+      extend (config, ctx) {
+      }
   }
 }

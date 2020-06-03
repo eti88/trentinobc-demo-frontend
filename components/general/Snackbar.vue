@@ -8,7 +8,7 @@
     :right="true"
   >
     {{ message }}
-    <v-btn @click="show = false" text>
+    <v-btn text @click="show = false">
       Chiudi
     </v-btn>
   </v-snackbar>

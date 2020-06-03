@@ -17,6 +17,9 @@ $ yarn start
 
 # generate static project
 $ yarn generate
-```
 
+# create env file with BASE_URL variable 
+$ touch .env
+
+```
 For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
