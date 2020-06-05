@@ -65,6 +65,7 @@
           <v-col cols="12">
             <v-btn
               @click="saveData"
+              :loading="loading"
               color="success"
             >
               Upload
@@ -92,7 +93,8 @@ export default {
      * Vuex Getters
      */
     ...mapGetters({
-      dialog: 'txs/getModal'
+      dialog: 'txs/getModal',
+      loading: 'txs/getLoading'
     })
   },
   watch: {
@@ -136,7 +138,7 @@ export default {
       const refId = this.value.id
       const isStatusOk = await this.addFile({ data: formData })
       if (!isStatusOk) {
-        return 
+        return
       }
       this.close()
     },
