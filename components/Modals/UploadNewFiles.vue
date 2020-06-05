@@ -135,7 +135,7 @@ export default {
         const file = this.files[i]
         formData.append(`files[${i}]`, file)
       }
-      const refId = this.value.id
+
       const isStatusOk = await this.addFile({ data: formData })
       if (!isStatusOk) {
         return
