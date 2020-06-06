@@ -1,5 +1,6 @@
 import { assign, set } from '@/helpers/vuex'
 import { responseError } from '~/helpers/utils.js'
+import { saveAs } from 'file-saver'
 
 const getDefaultState = () => ({
   list: [],
@@ -67,10 +68,61 @@ export const actions = {
       commit('setLoading', false)
     }
   },
+  async fetchMeta ({ commit }, path) {
+    try {
+      commit('setLoading', true)
+      let success = false
+      let data, message
+      await this.$axios.$get(`/ipfs/${path}`, { baseURL: 'https://gateway.ipfs.io' })
+        .then((resp) => {
+          success = (res.status === 200)
+          if (res.status === 200) {
+            data = res.data.data
+            console.log(data)
+          }
+          return data
+        }).catch((error) => {
+          // eslint-disable-next-line no-console
+          console.error(`[bank][download]: ${error}`)
+          this.$notifier.showMessage({ content: error, color: 'error' })
+          return {}
+        })
+      if (!success) { throw new Error(message) }
+      return data
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error(`[vuex error][downloadFile]: ${error}`)
+      this.$notifier.showMessage({ content: error, color: 'error' })
+      return {}
+    } finally {
+      commit('setLoading', false)
+    }
+  },
   async downloadFile ({ commit }, item) {
-    await console.log('todo')
-    console.log(commit)
-    console.log(item)
+    try {
+      commit('setLoading', true)
+      let success = false
+      let data, message
+      await this.$axios.$get(`/ipfs/${item.ipfs}`, { baseURL: 'https://gateway.ipfs.io', responseType: 'blob', timeout: 30000 })
+        .then((resp) => {
+          const blob = new Blob([resp])
+          this.$notifier.showMessage({ content: 'Download avviato.', color: 'success' })
+          saveAs(blob, item.originalName)
+        }).catch((error) => {
+        // eslint-disable-next-line no-console
+          console.error(`[bank][download]: ${error}`)
+          this.$notifier.showMessage({ content: error, color: 'error' })
+        })
+      if (!success) { throw new Error(message) }
+      return data
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error(`[vuex error][downloadFile]: ${error}`)
+      this.$notifier.showMessage({ content: error, color: 'error' })
+      return {}
+    } finally {
+      commit('setLoading', false)
+    }
   },
   async addFile ({ commit }, item) {
     try {

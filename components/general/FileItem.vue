@@ -7,8 +7,8 @@
     </v-list-item-avatar>
 
     <v-list-item-content>
-      <v-list-item-title v-text="value.title" />
-      <v-list-item-subtitle v-text="value.release_date" />
+      <v-list-item-title v-text="value.fileName" />
+      <v-list-item-subtitle v-text="value.created_at | date" />
     </v-list-item-content>
 
     <v-list-item-action>
@@ -61,18 +61,29 @@ export default {
   },
   data () {
     return {
-      closeOnClick: true
+      closeOnClick: true,
+      info: {}
     }
   },
   methods: {
     ...mapActions({
-      reset: 'files/reset'
+      reset: 'files/reset',
+      fetchTx: 'files/fetchTx',
+      downloadFile: 'files/downloadFile',
+      fetchMeta: 'files/fetchMeta'
     }),
-    onShowInformation (item) {
-      console.log('todo')
+    async onShowInformation (item) {
+      const data = await this.fetchTx(item.hash)
+      const meta = await this.fetchMeta(data.tx.msg.value.meta_uri)
+      Object.assign(this.info, meta)
     },
-    onDownload (item) {
-      console.log('todo')
+    async onDownload (item) {
+      const data = await this.fetchTx(item.hash)
+      const body = {
+        originalName: item.originalName,
+        ipfs: data.tx.msg.value.content_uri
+      }
+      this.downloadFile(item)
     }
   }
 }
