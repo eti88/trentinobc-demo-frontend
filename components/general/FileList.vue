@@ -1,20 +1,41 @@
 <template>
-  <v-list
-    two-line
-    subheader
-  >
-    <v-subheader inset>
-      Files
-    </v-subheader>
-    <v-list-item-group v-model="item" color="primary">
-      <VFileItem
-        v-for="item in files"
-        :key="item.title"
-        :value="item"
-        class="item"
-      />
-    </v-list-item-group>
-  </v-list>
+  <v-content>
+    <v-list
+      two-line
+      subheader
+    >
+      <v-subheader inset>
+        Files
+      </v-subheader>
+      <v-list-item-group v-model="item" color="primary">
+        <VFileItem
+          v-for="item in files"
+          :key="item.title"
+          :value="item"
+          class="item"
+          @updateMeta="updatedInfo"
+        />
+        </v-list-item-group>
+      </v-list>
+      <v-bottom-sheet v-model="sheet" inset>
+        <v-sheet class="text-center" height="300px">
+          <v-btn
+            class="mt-6"
+            text
+            color="error"
+            @click="sheet = !sheet"
+          >
+            close
+          </v-btn>
+          <div class="my-2">
+            Informations
+          </div>
+          <div class="my-2">
+            <v-treeview :items="meta"></v-treeview>
+          </div>
+        </v-sheet>
+      </v-bottom-sheet>
+  </v-content>
 </template>
 
 <script>
@@ -32,7 +53,8 @@ export default {
   data () {
     return {
       files: [],
-      item: {}
+      sheet: false,
+      meta: {}
     }
   },
   computed: {
@@ -53,7 +75,11 @@ export default {
     ...mapActions({
       reset: 'txs/reset',
       fetchTxs: 'txs/fetchTxs'
-    })
+    }),
+    updatedInfo (val) {
+      this.meta = Object.assign({}, val)
+      this.sheet = true
+    }
   }
 }
 </script>

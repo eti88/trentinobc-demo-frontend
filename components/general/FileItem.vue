@@ -8,7 +8,7 @@
 
     <v-list-item-content>
       <v-list-item-title v-text="value.fileName" />
-      <v-list-item-subtitle v-text="value.created_at | date" />
+      <v-list-item-subtitle v-text="value.created_at | datetime" />
     </v-list-item-content>
 
     <v-list-item-action>
@@ -61,8 +61,7 @@ export default {
   },
   data () {
     return {
-      closeOnClick: true,
-      info: {}
+      closeOnClick: true
     }
   },
   methods: {
@@ -75,7 +74,7 @@ export default {
     async onShowInformation (item) {
       const data = await this.fetchTx(item.hash)
       const meta = await this.fetchMeta(data.tx.msg.value.meta_uri)
-      Object.assign(this.info, meta)
+      this.$emit('updateMeta', meta)
     },
     async onDownload (item) {
       const data = await this.fetchTx(item.hash)

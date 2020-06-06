@@ -5,21 +5,6 @@
     <v-flex xs12 class="align-stretch">
       <VFileList />
     </v-flex>
-      <v-bottom-sheet v-model="sheet" inset>
-        <v-sheet class="text-center" height="200px">
-          <v-btn
-            class="mt-6"
-            text
-            color="error"
-            @click="sheet = !sheet"
-          >
-            close
-          </v-btn>
-          <div class="my-3">
-            TODO
-          </div>
-        </v-sheet>
-      </v-bottom-sheet>
     <VUploadModal />
   </v-layout>
 </template>
@@ -36,9 +21,6 @@ export default {
     }
   },
   layout: 'authenticated',
-  components: { VFileList, VUploadModal },
-  data: () => ({
-    sheet: false
-  })
+  components: { VFileList, VUploadModal }
 }
 </script>
