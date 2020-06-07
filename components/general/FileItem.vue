@@ -81,16 +81,14 @@ export default {
     }),
     async onShowInformation (item) {
       console.log('--- on info ---')
-      await this.fetchTx(item.hash)
-      const data = this.getTx
+      const data = await this.fetchTx(item.hash)
       console.log(data)
       const meta = await this.fetchMeta(data.tx.msg.value.meta_uri)
       this.$emit('updateMeta', meta)
     },
     async onDownload (item) {
       console.log('--- on download ---')
-      await this.fetchTx(item.hash)
-      const data = this.getTx
+      const data = await this.fetchTx(item.hash)
       const body = {
         originalName: item.originalName,
         ipfs: data.tx.msg.value.content_uri
