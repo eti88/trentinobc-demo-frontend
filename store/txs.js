@@ -50,16 +50,16 @@ export const actions = {
 
       await fetch(`http://95.217.177.211:1317/txs/${hash}`, {
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
         }
-
       })
         .then(resp => resp.json())
         .then((res) => {
+          console.log('-------- resp')
+          console.log(res)
           success = (res.status === 200)
           if (success) {
-            console.log('-------- resp')
-            console.log(res)
             data = res.data.data
           }
         }).catch((err) => {
