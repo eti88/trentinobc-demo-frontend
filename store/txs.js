@@ -73,7 +73,7 @@ export const actions = {
       commit('setLoading', true)
       let success = false
       let data, message
-      await this.$axios.$get(`https://gateway.ipfs.io${path}`)
+      await this.$axios.$get(`http://95.217.177.211/${path}`)
         .then((res) => {
           success = (res.status === 200)
           if (res.status === 200) {
@@ -102,7 +102,7 @@ export const actions = {
       commit('setLoading', true)
       let success = false
       let data, message
-      await this.$axios.$get(`/ipfs/${item.ipfs}`, { baseURL: 'https://gateway.ipfs.io', responseType: 'blob', timeout: 30000 })
+      await this.$axios.$get(`http://95.217.177.211/${item.ipfs}`, { responseType: 'blob', timeout: 30000 })
         .then((resp) => {
           success = (resp.status === 200)
           const blob = new Blob([resp])
