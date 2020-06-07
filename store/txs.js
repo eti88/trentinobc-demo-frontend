@@ -27,7 +27,6 @@ export const actions = {
         success = (res.status === 200)
         if (res.status === 200) {
           data = res.data.data
-          console.log(data)
         }
       }).catch((err) => {
         message = responseError(err.response)

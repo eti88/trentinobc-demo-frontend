@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   props: {
@@ -64,6 +64,14 @@ export default {
       closeOnClick: true
     }
   },
+  computed: {
+    /**
+     * Vuex Getters
+     */
+    ...mapGetters({
+      getTx: 'txs/getItem'
+    })
+  },
   methods: {
     ...mapActions({
       reset: 'files/reset',
@@ -72,7 +80,8 @@ export default {
       fetchMeta: 'files/fetchMeta'
     }),
     async onShowInformation (item) {
-      const data = await this.fetchTx(item.hash)
+      await this.fetchTx(item.hash)
+      const data = this.getTx
       const meta = await this.fetchMeta(data.tx.msg.value.meta_uri)
       this.$emit('updateMeta', meta)
     },
