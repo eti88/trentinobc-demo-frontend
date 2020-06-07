@@ -47,7 +47,13 @@ export const actions = {
       commit('setLoading', true)
       let success = false
       let data, message
-      await this.$axios.get(`/txs/${hash}`, { baseURL: 'http://95.217.177.211:1317' }).then((res) => {
+      await this.$axios.get(`/txs/${hash}`, { 
+          baseURL: 'http://95.217.177.211:1317',
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+          }
+        }).then((res) => {
         success = (res.status === 200)
         if (res.status === 200) {
           data = res.data.data
@@ -61,7 +67,7 @@ export const actions = {
       commit('setItem', data)
     } catch (error) {
       // eslint-disable-next-line no-console
-      console.error(`[vuex error][fetchTxs]: ${error}`)
+      console.error(`[vuex error][fetchTx]: ${error}`)
       this.$notifier.showMessage({ content: error, color: 'error' })
     } finally {
       commit('setLoading', false)
