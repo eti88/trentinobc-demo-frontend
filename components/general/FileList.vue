@@ -31,7 +31,7 @@
             Informations
           </div>
           <div class="my-2">
-            <v-treeview :items="meta"></v-treeview>
+            <tree-view :data="meta" :options="{maxDepth: 4}"></tree-view>
           </div>
         </v-sheet>
       </v-bottom-sheet>
@@ -77,7 +77,8 @@ export default {
       fetchTxs: 'txs/fetchTxs'
     }),
     updatedInfo (val) {
-      this.meta = Object.assign({}, val)
+      console.log('-- event update --')
+      this.meta = val
       this.sheet = true
     }
   }

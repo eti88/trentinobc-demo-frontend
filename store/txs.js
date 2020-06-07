@@ -54,7 +54,8 @@ export const actions = {
         .then((res) => {
           data = res
         }).catch((err) => {
-          message = responseError('Wops!')
+          message = responseError('Wops! ' + err)
+          throw new Error(message)
         })
       commit('setItem', data)
       return data

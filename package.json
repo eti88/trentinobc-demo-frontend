@@ -19,7 +19,8 @@
     "file-saver": "^2.0.2",
     "nuxt": "^2.0.0",
     "nuxt-moment": "^1.0.4",
-    "vee-validate": "^3.3.2"
+    "vee-validate": "^3.3.2",
+    "vue-json-tree-view": "^2.1.6"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^2.0.0",
