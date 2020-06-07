@@ -82,7 +82,6 @@ export default {
     async onShowInformation (item) {
       console.log('--- on info ---')
       const data = await this.fetchTx(item.hash)
-      console.log(data)
       const meta = await this.fetchMeta(data.tx.msg.value.meta_uri)
       this.$emit('updateMeta', meta)
     },
