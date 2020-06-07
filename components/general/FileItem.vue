@@ -8,7 +8,7 @@
 
     <v-list-item-content>
       <v-list-item-title v-text="value.fileName" />
-      <v-list-item-subtitle v-text="value.created_at.substring(0, 10)" />
+      <v-list-item-subtitle v-text="`${value.created_at.substring(0, 10)} hash:${value.hash}`" />
     </v-list-item-content>
 
     <v-list-item-action>
@@ -83,7 +83,6 @@ export default {
       console.log('--- on info ---')
       const data = await this.fetchTx(item.hash)
       const meta = await this.fetchMeta(data.tx.value.msg[0].value.meta_uri)
-      console.log(meta)
       this.$emit('updateMeta', meta)
     },
     async onDownload (item) {
