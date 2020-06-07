@@ -48,23 +48,15 @@ export const actions = {
       let success = false
       let data, message
 
-      data = await fetch(`http://95.217.177.211/chain/txs/${hash}`, {
+      await fetch(`http://95.217.177.211/chain/txs/${hash}`, {
         method: 'GET'
       })
         .then(resp => resp.json())
         .then((res) => {
-          console.log('-------- resp')
-          console.log(res)
-          success = (res.status === 200)
-          if (success) {
-            data = res.data.data
-          }
+          data = res
         }).catch((err) => {
-          message = responseError(err.response)
+          message = responseError('Wops!')
         })
-      console.log('-------- 2')
-      console.log(data)
-      if (!success) { throw new Error(message) }
       commit('setItem', data)
       return data
     } catch (error) {
