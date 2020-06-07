@@ -18,7 +18,7 @@
         </v-list-item-group>
       </v-list>
       <v-bottom-sheet v-model="sheet" inset>
-        <v-sheet class="text-center" height="300px">
+        <v-sheet class="text-center" height="400px">
           <v-btn
             class="mt-6"
             text
@@ -30,7 +30,7 @@
           <div class="my-2">
             Informations
           </div>
-          <div class="my-2">
+          <div class="my-2 scrollable-y">
             <tree-view :data="meta" :options="{maxDepth: 4}"></tree-view>
           </div>
         </v-sheet>
@@ -88,5 +88,9 @@ export default {
 <style scoped>
   .item:hover {
     background: #8686861f;
+  }
+  .scrollable-y {
+    overflow-y: auto;
+    height: inherit;
   }
 </style>

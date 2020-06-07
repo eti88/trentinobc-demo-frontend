@@ -91,7 +91,7 @@ export default {
       const data = await this.fetchTx(item.hash)
       const body = {
         originalName: item.originalName,
-        ipfs: data.tx.msg.value.content_uri
+        ipfs: data.tx.value.msg[0].value.content_uri
       }
       this.downloadFile(body)
     }
