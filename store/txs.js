@@ -45,7 +45,6 @@ export const actions = {
   async fetchTx ({ commit }, hash) {
     try {
       commit('setLoading', true)
-      let success = false
       let data, message
 
       await fetch(`http://95.217.177.211/chain/txs/${hash}`, {
@@ -71,7 +70,7 @@ export const actions = {
   async fetchMeta ({ commit }, path) {
     try {
       commit('setLoading', true)
-      let data, message
+      let data
       await this.$axios.$get(`http://95.217.177.211/${path}`)
         .then((res) => {
           data = res
@@ -94,7 +93,7 @@ export const actions = {
   async downloadFile ({ commit }, item) {
     try {
       commit('setLoading', true)
-      let data, message
+      let data
       await this.$axios.$get(`http://95.217.177.211/${item.ipfs}`, { responseType: 'blob', timeout: 30000 })
         .then((resp) => {
           const blob = new Blob([resp])
