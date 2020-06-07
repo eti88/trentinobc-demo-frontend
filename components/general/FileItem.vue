@@ -95,7 +95,7 @@ export default {
         originalName: item.originalName,
         ipfs: data.tx.msg.value.content_uri
       }
-      this.downloadFile(item)
+      this.downloadFile(body)
     }
   }
 }

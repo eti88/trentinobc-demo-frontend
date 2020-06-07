@@ -1,6 +1,6 @@
+import { saveAs } from 'file-saver'
 import { assign, set } from '@/helpers/vuex'
 import { responseError } from '~/helpers/utils.js'
-import { saveAs } from 'file-saver'
 
 const getDefaultState = () => ({
   list: [],
@@ -51,9 +51,8 @@ export const actions = {
         success = (res.status === 200)
         if (res.status === 200) {
           data = res.data.data
-          console.log(data)
         }
-        console.log(res)
+        return data
       }).catch((err) => {
         message = responseError(err.response)
       })
@@ -74,13 +73,11 @@ export const actions = {
       let success = false
       let data, message
       await this.$axios.$get(`/ipfs/${path}`, { baseURL: 'https://gateway.ipfs.io' })
-        .then((resp) => {
+        .then((res) => {
           success = (res.status === 200)
           if (res.status === 200) {
             data = res.data.data
-            console.log(data)
           }
-          console.log(res)
           return data
         }).catch((error) => {
           // eslint-disable-next-line no-console
@@ -106,6 +103,7 @@ export const actions = {
       let data, message
       await this.$axios.$get(`/ipfs/${item.ipfs}`, { baseURL: 'https://gateway.ipfs.io', responseType: 'blob', timeout: 30000 })
         .then((resp) => {
+          success = (resp.status === 200)
           const blob = new Blob([resp])
           this.$notifier.showMessage({ content: 'Download avviato.', color: 'success' })
           saveAs(blob, item.originalName)
