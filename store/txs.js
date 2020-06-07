@@ -53,6 +53,7 @@ export const actions = {
           data = res.data.data
           console.log(data)
         }
+        console.log(res)
       }).catch((err) => {
         message = responseError(err.response)
       })
@@ -79,6 +80,7 @@ export const actions = {
             data = res.data.data
             console.log(data)
           }
+          console.log(res)
           return data
         }).catch((error) => {
           // eslint-disable-next-line no-console
