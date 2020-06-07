@@ -29,14 +29,14 @@
         </template>
         <v-list>
           <v-list-item
-            @click="onDownload(item)"
+            @click="onDownload(value)"
           >
             <v-list-item-title>
               Download
             </v-list-item-title>
           </v-list-item>
           <v-list-item
-            @click="onShowInformation(item)"
+            @click="onShowInformation(value)"
           >
             <v-list-item-title>
               Informazioni
@@ -86,7 +86,8 @@ export default {
       this.$emit('updateMeta', meta)
     },
     async onDownload (item) {
-      const data = await this.fetchTx(item.hash)
+      await this.fetchTx(item.hash)
+      const data = this.getTx
       const body = {
         originalName: item.originalName,
         ipfs: data.tx.msg.value.content_uri
