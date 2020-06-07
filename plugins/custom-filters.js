@@ -1,9 +1,6 @@
 import Vue from 'vue'
-import { formatCurrency } from '@/helpers/utils'
 
 export default ({ app }) => {
-  Vue.filter('currency', formatCurrency)
-
   Vue.filter('date', (value, inFormat = 'YYYY-MM-DD', outFormat = 'DD-MM-YYYY') => {
     if (value) {
       return app.$moment(value, inFormat).format(outFormat)
