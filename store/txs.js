@@ -47,28 +47,33 @@ export const actions = {
       commit('setLoading', true)
       let success = false
       let data, message
-      await this.$axios.get(`/txs/${hash}`, { 
-          baseURL: 'http://95.217.177.211:1317',
-          headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
-          }
-        }).then((res) => {
-        success = (res.status === 200)
-        if (res.status === 200) {
-          data = res.data.data
+
+      await fetch(`http://95.217.177.211:1317/txs/${hash}`, {
+        headers: {
+          'Content-Type': 'application/json'
         }
-        return data
-      }).catch((err) => {
-        message = responseError(err.response)
+
       })
+        .then(resp => resp.json())
+        .then((res) => {
+          success = (res.status === 200)
+          if (success) {
+            console.log('-------- resp')
+            console.log(res)
+            data = res.data.data
+          }
+        }).catch((err) => {
+          message = responseError(err.response)
+        })
 
       if (!success) { throw new Error(message) }
       commit('setItem', data)
+      return data
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(`[vuex error][fetchTx]: ${error}`)
       this.$notifier.showMessage({ content: error, color: 'error' })
+      return null
     } finally {
       commit('setLoading', false)
     }
