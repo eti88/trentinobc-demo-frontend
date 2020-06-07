@@ -74,10 +74,10 @@ export default {
   },
   methods: {
     ...mapActions({
-      reset: 'files/reset',
-      fetchTx: 'files/fetchTx',
-      downloadFile: 'files/downloadFile',
-      fetchMeta: 'files/fetchMeta'
+      reset: 'txs/reset',
+      fetchTx: 'txs/fetchTx',
+      downloadFile: 'txs/downloadFile',
+      fetchMeta: 'txs/fetchMeta'
     }),
     async onShowInformation (item) {
       console.log('--- on info ---')
