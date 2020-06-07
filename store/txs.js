@@ -73,7 +73,7 @@ export const actions = {
       commit('setLoading', true)
       let success = false
       let data, message
-      await this.$axios.$get(`/ipfs/${path}`, { baseURL: 'https://gateway.ipfs.io' })
+      await this.$axios.$get(`https://gateway.ipfs.io${path}`)
         .then((res) => {
           success = (res.status === 200)
           if (res.status === 200) {
