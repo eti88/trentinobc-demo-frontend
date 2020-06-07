@@ -71,22 +71,16 @@ export const actions = {
   async fetchMeta ({ commit }, path) {
     try {
       commit('setLoading', true)
-      let success = false
       let data, message
       await this.$axios.$get(`http://95.217.177.211/${path}`)
         .then((res) => {
-          success = (res.status === 200)
-          if (res.status === 200) {
-            data = res.data.data
-          }
-          return data
+          data = res
         }).catch((error) => {
           // eslint-disable-next-line no-console
-          console.error(`[bank][download]: ${error}`)
+          console.error(`[Meta]${error}`)
           this.$notifier.showMessage({ content: error, color: 'error' })
           return {}
         })
-      if (!success) { throw new Error(message) }
       return data
     } catch (error) {
       // eslint-disable-next-line no-console
@@ -100,26 +94,22 @@ export const actions = {
   async downloadFile ({ commit }, item) {
     try {
       commit('setLoading', true)
-      let success = false
       let data, message
       await this.$axios.$get(`http://95.217.177.211/${item.ipfs}`, { responseType: 'blob', timeout: 30000 })
         .then((resp) => {
-          success = (resp.status === 200)
           const blob = new Blob([resp])
           this.$notifier.showMessage({ content: 'Download avviato.', color: 'success' })
           saveAs(blob, item.originalName)
         }).catch((error) => {
         // eslint-disable-next-line no-console
-          console.error(`[bank][download]: ${error}`)
+          console.error(`[download]${error}`)
           this.$notifier.showMessage({ content: error, color: 'error' })
         })
-      if (!success) { throw new Error(message) }
       return data
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(`[vuex error][downloadFile]: ${error}`)
       this.$notifier.showMessage({ content: error, color: 'error' })
-      return {}
     } finally {
       commit('setLoading', false)
     }
